@@ -35,5 +35,11 @@ public class Soundex
         if ("MN".IndexOf(c) >= 0) return '5';
         if ("R".IndexOf(c) >= 0) return '6';
         return 0; //For A,E,I,O,U,H,W,Y
+        Dictionary<char, int> dict = new Dictionary<char, int>
+        {
+            {'B', 1}, {'F', 1}, {'P', 1}, {'V', 1},{'C', 2}, {'G', 2}, {'J', 2}, {'K', 2}, {'Q', 2}, {'S', 2}, {'X', 2}, {'Z', 2},
+            {'D', 3}, {'T', 3}, {'L', 4}, {'M', 5}, {'N', 5},{'R', 5}
+        };
+        return dict.ContainsKey(c) ? char.Parse(c.ToString()) : '0';
     }
 }
