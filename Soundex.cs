@@ -9,11 +9,9 @@ public class Soundex
         {
             return string.Empty;
         }
-
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
-
         for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
             char code = GetSoundexCode(name[i]);
@@ -22,47 +20,20 @@ public class Soundex
                 soundex.Append(code);
                 prevCode = code;
             }
-        }
-
-        while (soundex.Length < 4)
-        {
-            soundex.Append('0');
-        }
-
+            if (i < name.Length)
+                soundex.Append('0');
+        }            
         return soundex.ToString();
     }
-
     private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-        switch (c)
-        {
-            case 'B':
-            case 'F':
-            case 'P':
-            case 'V':
-                return '1';
-            case 'C':
-            case 'G':
-            case 'J':
-            case 'K':
-            case 'Q':
-            case 'S':
-            case 'X':
-            case 'Z':
-                return '2';
-            case 'D':
-            case 'T':
-                return '3';
-            case 'L':
-                return '4';
-            case 'M':
-            case 'N':
-                return '5';
-            case 'R':
-                return '6';
-            default:
-                return '0'; // For A, E, I, O, U, H, W, Y
-        }
+        if ("BFPV".IndexOf(c) >= 0) return '1';
+        if ("CGJKQSXZ".IndexOf(c) >= 0) return '2';
+        if ("DT".IndexOf(c) >= 0) return '3';
+        if ("L".IndexOf(c) >= 0) return '4';
+        if ("MN".IndexOf(c) >= 0) return '5';
+        if ("R".IndexOf(c) >= 0) return '6';
+        return 0; //For A,E,I,O,U,H,W,Y
     }
 }
