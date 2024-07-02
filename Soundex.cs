@@ -9,7 +9,32 @@ public class Soundex
         {
             return string.Empty;
         }
-        string soundex = GetSoundexString(name);   
+
+        StringBuilder soundex = new StringBuilder();
+        soundex.Append(char.ToUpper(name[0]));
+        char prevCode = GetSoundexCode(name[0]);
+
+        for (int i = 1; i < name.Length; i++)
+        {
+            char code = GetSoundexCode(name[i]);
+            if (code != '0' && code != prevCode)
+            {
+                soundex.Append(code);
+                prevCode = code;
+            }
+
+            if (soundex.Length == 4)
+            {
+                break;
+            }
+        }
+
+        // Pad with '0's to ensure the Soundex code is always 4 characters long
+        while (soundex.Length < 4)
+        {
+            soundex.Append('0');
+        }
+
         return soundex.ToString();
     }
     private static char GetSoundexCode(char c)
@@ -21,31 +46,5 @@ public class Soundex
             {'D', 3}, {'T', 3}, {'L', 4}, {'M', 5}, {'N', 5},{'R', 5}
         };
         return dict.ContainsKey(c) ? char.Parse(c.ToString()) : '0';
-    }
-    private static string GetSoundexString(string name)
-    {
-        StringBuilder soundex = new StringBuilder();
-        soundex.Append(char.ToUpper(name[0]));
-        char prevCode = GetSoundexCode(name[0]);
-        soundex = BuildSoundex(soundex, name, prevCode);
-        while (soundex.Length < 4)
-        {
-            soundex.Append('0');
-        }
-        return soundex.ToString();
-    }
-    private static StringBuilder BuildSoundex(StringBuilder soundex, string name, char prevCode)
-    {
-        for (int i = 1; i < name.Length; i++)
-        {
-            if (soundex.Length == 4) { break; }
-            char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != prevCode)
-            {
-                soundex.Append(code);
-                prevCode = code;
-            }
-        }
-        return soundex;
     }
 }
