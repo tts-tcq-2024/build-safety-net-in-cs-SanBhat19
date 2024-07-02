@@ -9,11 +9,19 @@ public class Soundex
         {
             return string.Empty;
         }
-
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
-
+        soundex = GetSoundexString(soundex, name, prevCode);        
+        // Pad with '0's to ensure the Soundex code is always 4 characters long
+        while (soundex.Length < 4)
+        {
+            soundex.Append('0');
+        }
+        return soundex.ToString();
+    }
+    private static StringBuilder GetSoundexString(StringBuilder soundex, string name, char prevCode) 
+    {
         for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
             char code = GetSoundexCode(name[i]);
@@ -23,14 +31,7 @@ public class Soundex
                 prevCode = code;
             }
         }
-
-        // Pad with '0's to ensure the Soundex code is always 4 characters long
-        while (soundex.Length < 4)
-        {
-            soundex.Append('0');
-        }
-
-        return soundex.ToString();
+        return soundex;
     }
 
     private static char GetSoundexCode(char c)
