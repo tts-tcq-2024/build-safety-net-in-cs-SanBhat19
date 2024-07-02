@@ -11,7 +11,6 @@ public class Soundex
         }
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
-        char prevCode = GetSoundexCode(name[0]);
         soundex = GetSoundexString(soundex, name, prevCode);        
         // Pad with '0's to ensure the Soundex code is always 4 characters long
         while (soundex.Length < 4)
@@ -20,8 +19,9 @@ public class Soundex
         }
         return soundex.ToString();
     }
-    private static StringBuilder GetSoundexString(StringBuilder soundex, string name, char prevCode) 
+    private static StringBuilder GetSoundexString(StringBuilder soundex, string name) 
     {
+        char prevCode = GetSoundexCode(name[0]);
         for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
             char code = GetSoundexCode(name[i]);
