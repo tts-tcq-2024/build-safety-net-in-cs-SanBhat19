@@ -21,14 +21,13 @@ public class Soundex
     }
     private static StringBuilder GetSoundexString(StringBuilder soundex, string name) 
     {
-        char prevCode = GetSoundexCode(name[0]);
         for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
             char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != prevCode)
+            if (code != '0' && code != GetSoundexCode(name[0]))
             {
                 soundex.Append(code);
-                prevCode = code;
+                GetSoundexCode(name[0]) = code;
             }
         }
         return soundex;
