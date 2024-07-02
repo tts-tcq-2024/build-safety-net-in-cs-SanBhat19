@@ -22,9 +22,8 @@ public class Soundex
     }
     private static StringBuilder GetSoundexString(StringBuilder soundex, string name, char prevCode) 
     {
-        for (int i = 1; i < name.Length i++)
+        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
-            if (soundex.Length < 4) { break; }
             char code = GetSoundexCode(name[i]);
             if (code != '0' && code != prevCode)
             {
