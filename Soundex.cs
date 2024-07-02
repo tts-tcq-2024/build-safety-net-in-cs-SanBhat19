@@ -27,6 +27,15 @@ public class Soundex
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
+        soundex = BuildSoundex(soundex, name, prevCode);
+        while (soundex.Length < 4)
+        {
+            soundex.Append('0');
+        }
+        return soundex.ToString();
+    }
+    private static StringBuilder BuildSoundex(StringBuilder soundex, string name, char prevCode)
+    {
         for (int i = 1; i < name.Length; i++)
         {
             if (soundex.Length == 4) { break; }
@@ -37,10 +46,6 @@ public class Soundex
                 prevCode = code;
             }
         }
-        while (soundex.Length < 4)
-        {
-            soundex.Append('0');
-        }
-        return soundex.ToString();
+        return soundex;
     }
 }
