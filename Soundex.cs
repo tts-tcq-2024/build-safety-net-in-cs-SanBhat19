@@ -27,16 +27,19 @@ public class Soundex
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
-        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
+        for (int i = 1; i < name.Length; i++)
         {
+            if (soundex.Length == 4) { break; }
             char code = GetSoundexCode(name[i]);
             if (code != '0' && code != prevCode)
             {
                 soundex.Append(code);
                 prevCode = code;
             }
-            if (i < name.Length)
-                soundex.Append('0');
+        }
+        while (soundex.Length < 4)
+        {
+            soundex.Append('0');
         }
         return soundex.ToString();
     }
