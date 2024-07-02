@@ -14,18 +14,13 @@ public class Soundex
         soundex.Append(char.ToUpper(name[0]));
         char prevCode = GetSoundexCode(name[0]);
 
-        for (int i = 1; i < name.Length; i++)
+        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
             char code = GetSoundexCode(name[i]);
             if (code != '0' && code != prevCode)
             {
                 soundex.Append(code);
                 prevCode = code;
-            }
-
-            if (soundex.Length == 4)
-            {
-                break;
             }
         }
 
@@ -37,14 +32,20 @@ public class Soundex
 
         return soundex.ToString();
     }
+
     private static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-        Dictionary<char, int> dict = new Dictionary<char, int>
+
+        return c switch
         {
-            {'B', 1}, {'F', 1}, {'P', 1}, {'V', 1},{'C', 2}, {'G', 2}, {'J', 2}, {'K', 2}, {'Q', 2}, {'S', 2}, {'X', 2}, {'Z', 2},
-            {'D', 3}, {'T', 3}, {'L', 4}, {'M', 5}, {'N', 5},{'R', 5}
+            'B' or 'F' or 'P' or 'V' => '1',
+            'C' or 'G' or 'J' or 'K' or 'Q' or 'S' or 'X' or 'Z' => '2',
+            'D' or 'T' => '3',
+            'L' => '4',
+            'M' or 'N' => '5',
+            'R' => '6',
+            _ => '0'
         };
-        return dict.ContainsKey(c) ? char.Parse(c.ToString()) : '0';
     }
 }
