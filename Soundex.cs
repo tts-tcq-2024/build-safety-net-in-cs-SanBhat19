@@ -9,34 +9,51 @@ public class Soundex
         {
             return string.Empty;
         }
+        StringBuilder soundex = InitializeTheSoundex(name);
+        char prevCode = GetSoundexCode(name[0]);
+
+        AppendingSoundexCharacters(name, soundex, ref prevCode);
+        SoundexCode(ref soundex);
+        return soundex.ToString();
+    }
+
+    public static StringBuilder InitializeTheSoundex(string name)
+    {
         StringBuilder soundex = new StringBuilder();
         soundex.Append(char.ToUpper(name[0]));
-        soundex = GetSoundexString(soundex, name, prevCode);        
-        // Pad with '0's to ensure the Soundex code is always 4 characters long
+        return soundex;
+    }
+
+    public static void AppendingSoundexCharacters(string name, StringBuilder soundex, ref char prevCode)
+    {
+        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
+        {
+            Characters(name[i], soundex, ref prevCode);
+        }
+    }
+    public static void Characters(char c, StringBuilder soundex, ref char prevCode)
+    {
+        if (char.IsLetter(c))
+        {
+            char code = GetSoundexCode(c);
+            if (AppendCode(code, prevCode))
+            {
+                soundex.Append(code);
+                prevCode = code;
+            }
+        }
+    }
+    public static bool AppendCode(char code, char prevCode) => code != 0 && code != prevCode;
+    public static void SoundexCode(ref StringBuilder soundex)
+    {
         while (soundex.Length < 4)
         {
             soundex.Append('0');
         }
-        return soundex.ToString();
     }
-    private static StringBuilder GetSoundexString(StringBuilder soundex, string name) 
-    {
-        for (int i = 1; i < name.Length && soundex.Length < 4; i++)
-        {
-            char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != GetSoundexCode(name[0]))
-            {
-                soundex.Append(code);
-                GetSoundexCode(name[0]) = code;
-            }
-        }
-        return soundex;
-    }
-
-    private static char GetSoundexCode(char c)
+    public static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-
         return c switch
         {
             'B' or 'F' or 'P' or 'V' => '1',
