@@ -9,60 +9,60 @@ public class Soundex
         {
             return string.Empty;
         }
-
-        StringBuilder soundex = new StringBuilder();
-        soundex.Append(char.ToUpper(name[0]));
+        StringBuilder soundex = InitializeTheSoundex(name);
         char prevCode = GetSoundexCode(name[0]);
 
+        AppendingSoundexCharacters(name, soundex, ref prevCode);
+        SoundexCode(ref soundex);
+        return soundex.ToString();
+    }
+
+    public static StringBuilder InitializeTheSoundex(string name)
+    {
+        StringBuilder soundex = new StringBuilder();
+        soundex.Append(char.ToUpper(name[0]));
+        return soundex;
+    }
+
+    public static void AppendingSoundexCharacters(string name, StringBuilder soundex, ref char prevCode)
+    {
         for (int i = 1; i < name.Length && soundex.Length < 4; i++)
         {
-            char code = GetSoundexCode(name[i]);
-            if (code != '0' && code != prevCode)
+            Characters(name[i], soundex, ref prevCode);
+        }
+    }
+    public static void Characters(char c, StringBuilder soundex, ref char prevCode)
+    {
+        if (char.IsLetter(c))
+        {
+            char code = GetSoundexCode(c);
+            if (AppendCode(code, prevCode))
             {
                 soundex.Append(code);
                 prevCode = code;
             }
         }
-
+    }
+    public static bool AppendCode(char code, char prevCode) => code != 0 && code != prevCode;
+    public static void SoundexCode(ref StringBuilder soundex)
+    {
         while (soundex.Length < 4)
         {
             soundex.Append('0');
         }
-
-        return soundex.ToString();
     }
-
-    private static char GetSoundexCode(char c)
+    public static char GetSoundexCode(char c)
     {
         c = char.ToUpper(c);
-        switch (c)
+        return c switch
         {
-            case 'B':
-            case 'F':
-            case 'P':
-            case 'V':
-                return '1';
-            case 'C':
-            case 'G':
-            case 'J':
-            case 'K':
-            case 'Q':
-            case 'S':
-            case 'X':
-            case 'Z':
-                return '2';
-            case 'D':
-            case 'T':
-                return '3';
-            case 'L':
-                return '4';
-            case 'M':
-            case 'N':
-                return '5';
-            case 'R':
-                return '6';
-            default:
-                return '0'; // For A, E, I, O, U, H, W, Y
-        }
+            'B' or 'F' or 'P' or 'V' => '1',
+            'C' or 'G' or 'J' or 'K' or 'Q' or 'S' or 'X' or 'Z' => '2',
+            'D' or 'T' => '3',
+            'L' => '4',
+            'M' or 'N' => '5',
+            'R' => '6',
+            _ => '0'
+        };
     }
 }

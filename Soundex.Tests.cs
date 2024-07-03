@@ -13,6 +13,5 @@ public class SoundexTests
     {
         Assert.Equal("A000", Soundex.GenerateSoundex("A"));
     }
-
    
 }
